@@ -1,5 +1,7 @@
 import EventList from "@/components/events/EventList";
 import ResultsTitle from "@/components/events/ResultsTitle";
+import Button from "@/components/ui/Button";
+import ErrorAlert from "@/components/ui/ErrorAlert";
 import { getFilteredEvents } from "@/dummy-data";
 import { useRouter } from "next/router";
 
@@ -29,11 +31,29 @@ export default function FilteredEventsPage() {
   const noEventsFound = !filteredEvents || filteredEvents.length === 0;
 
   if (noEventsFound) {
-    return <h3>no events found for the chosen filter!</h3>;
+    return (
+      <>
+        <ErrorAlert>
+          <p>no events found for the chosen filter!</p>
+        </ErrorAlert>
+        <Button link="/events">
+          Show All Events
+        </Button>
+      </>
+    );
   }
 
   if (invalidFilter) {
-    return <h3>Invalid filter. Please, adjust your values</h3>;
+    return (
+      <>
+        <ErrorAlert>
+          <p>Invalid filter. Please, adjust your values</p>
+        </ErrorAlert>
+        <Button link="/events">
+          Show All Events
+        </Button>
+      </>
+    );
   }
 
   return (

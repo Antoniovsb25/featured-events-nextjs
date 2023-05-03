@@ -3,7 +3,7 @@ import EventLogistics from "@/components/event-detail/event-logistics";
 import EventSummary from "@/components/event-detail/event-summary";
 import Button from "@/components/ui/Button";
 import ErrorAlert from "@/components/ui/ErrorAlert";
-import { getEventById, getAllEvents } from "../../helpers/api-util";
+import { getEventById, getFeaturedEvents } from "../../helpers/api-util";
 
 export default function EventDetailPage(props) {
   const event = props.selectedEvent;
@@ -12,7 +12,7 @@ export default function EventDetailPage(props) {
     return (
       <>
         <ErrorAlert>
-          <p>No event found :/</p>
+          <p>Loading...</p>
         </ErrorAlert>
         <Button link="/events">Show All Events</Button>
       </>
@@ -43,14 +43,15 @@ export async function getStaticProps(context) {
     props: {
       selectedEvent: event,
     },
+    revalidate: 30
   };
 }
 
 export async function getStaticPaths() {
-  const events = await getAllEvents();
+  const events = await getFeaturedEvents();
   const paths = events.map((event) => ({ params: { eventId: event.id } }));
   return {
     paths: paths,
-    fallback: false,
+    fallback: true, //there are more pages than the one that are being prepared here
   };
 }
